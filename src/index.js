@@ -1,5 +1,5 @@
-import { getData } from "../scripts/excersize1.js";
-import { getDataForPart2 } from "../scripts/excersize2.js";
+import { getData } from "./scripts/excersize1.js";
+import { getDataForPart2 } from "./scripts/excersize2.js";
 
 const switchBtn = document.getElementById(`switchExcersize`);
 const searchBtn = document.getElementById(`searchBtn`);

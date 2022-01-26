@@ -1,9 +1,8 @@
-import { getMovie, getCountry } from "./excersize1.js";
+import { getMovie, getCountry } from "./apiCalls.js";
 
-// const movie = `x-men`;
-
+// prettier-ignore
 const movieMinAdder = (arr) =>
-  arr.map((x) => (x ? Number(x.split(" ")[0]) : 0)).reduce((a, b) => a + b);
+  arr.map((movieWithMin) => (movieWithMin ? Number(movieWithMin.split(" ")[0]) : 0)).reduce((a, b) => a + b);
 
 export async function getDataForPart2() {
   const minutesHtml = document.querySelector(`.resultsArea--minutes`);
@@ -12,7 +11,7 @@ export async function getDataForPart2() {
   const input1 = document.querySelector(`.excersize2__input--1`);
   const input2 = document.querySelector(`.excersize2__input--2`);
   const input3 = document.querySelector(`.excersize2__input--3`);
-    
+
   const moviesArr = [
     getMovie(input1.value),
     getMovie(input2.value),

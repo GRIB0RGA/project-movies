@@ -1,4 +1,3 @@
-
 const webpack = require("webpack");
 const config = require("../webpack.config");
 
@@ -9,22 +8,20 @@ const port = 3000;
 const app = express();
 const compiler = webpack(config);
 
-
 app.use(
-require("webpack-dev-middleware")(compiler, {
-publicPath: config.output.path,
-})
+  require("webpack-dev-middleware")(compiler, {
+    publicPath: config.output.path,
+  })
 );
-
 
 app.use(express.static("src"));
 app.get("/", function (req, res) {
-res.sendFile(path.join(__dirname, "../src/index.html"));
+  res.sendFile(path.join(__dirname, "../src/index.html"));
 });
 app.listen(port, function (err) {
-if (err) {
-console.log(err);
-} else {
-open("http://localhost:" + port);
-}
+  if (err) {
+    console.log(err);
+  } else {
+    open("http://localhost:" + port);
+  }
 });

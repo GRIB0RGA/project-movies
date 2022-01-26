@@ -1,3 +1,5 @@
+import { getMovie, getCountry } from "./apiCalls.js";
+
 const injectHtml = (title, img, actors, year) => {
   const whereToInject = document.querySelector(`.movieContainer`);
   const html = `  
@@ -26,16 +28,6 @@ const part2Injector = (country, currency, flag) => {
   whereToInject.insertAdjacentHTML(`beforeend`, html);
 };
 
-export const getMovie = (title) =>
-  fetch(`http://www.omdbapi.com/?t=${title}&&apikey=6d659266`).then((obj) =>
-    obj.json()
-  );
-
-export const getCountry = (country) =>
-  fetch(`https://restcountries.com/v3.1/name/${country}`).then((obj) =>
-    obj.json()
-  );
-
 export async function getData() {
   const searchInput = document.getElementById(`searchInput`);
   const movie = await getMovie(searchInput.value);
@@ -47,7 +39,6 @@ export async function getData() {
 
   injectHtml(movie.Title, movie.Poster, actors, movie.Year);
 
-
   for (let country of countriesArr) {
     const countryObj = await getCountry(country);
     const currency = Object.keys(countryObj[0].currencies)[0];
@@ -55,7 +46,3 @@ export async function getData() {
     part2Injector(country, currency, flags);
   }
 }
-
-
-
-

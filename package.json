@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node scripts/server.js",
+    "start": "node serverScript/server.js",
     "compile:sass": "node-sass sass/main.scss src/styles.css -w",
     "localtunnel": "lt --port 3000",
     "share": "npm-run-all --parallel start localtunnel",
