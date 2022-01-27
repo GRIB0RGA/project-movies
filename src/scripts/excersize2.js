@@ -17,18 +17,15 @@ export async function getDataForPart2() {
     getMovie(input2.value),
     getMovie(input3.value),
   ];
+  let movieInMin;
+  let movieCountries;
+  await Promise.all(moviesArr).then((x) => {
+    movieInMin = movieMinAdder(x.map((a) => a.Runtime));
+    // prettier-ignore
+    movieCountries = x.map((x) => x.Country).filter((x) => x).map((x) => x.split(", ")).flat();
+  });
+  movieInMin += ` min`;
 
-  const movieInMin = `${await Promise.all(moviesArr).then((x) =>
-    movieMinAdder(x.map((a) => a.Runtime))
-  )} min`;
-
-  const movieCountries = await Promise.all(moviesArr).then((x) =>
-    x
-      .map((x) => x.Country)
-      .filter((x) => x)
-      .map((x) => x.split(", "))
-      .flat()
-  );
   let population = 0;
   for (let country of movieCountries) {
     const countryObj = await getCountry(country);
