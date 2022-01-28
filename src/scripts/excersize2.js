@@ -1,9 +1,5 @@
 import { getMovie, getCountry } from "./apiCalls.js";
 
-// prettier-ignore
-const movieMinAdder = (arr) =>
-  arr.map((movieWithMin) => (movieWithMin ? Number(movieWithMin.split(" ")[0]) : 0)).reduce((a, b) => a + b);
-
 export async function getDataForPart2() {
   const minutesHtml = document.querySelector(`.resultsArea--minutes`);
   const populationHtml = document.querySelector(`.resultsArea--population`);
@@ -17,21 +13,24 @@ export async function getDataForPart2() {
     getMovie(input2.value),
     getMovie(input3.value),
   ];
-  let movieInMin;
-  let movieCountries;
-  await Promise.all(moviesArr).then((x) => {
-    movieInMin = movieMinAdder(x.map((a) => a.Runtime));
-    // prettier-ignore
-    movieCountries = x.map((x) => x.Country).filter((x) => x).map((x) => x.split(", ")).flat();
+
+  const getRuntimeAndMovieCountries = await Promise.all(moviesArr).then((x) => {
+    return x.map((movie) => ({
+      runtime: parseInt(movie.Runtime),
+      movieCountry: movie.Country,
+    }));
   });
-  movieInMin += ` min`;
 
-  let population = 0;
-  for (let country of movieCountries) {
-    const countryObj = await getCountry(country);
-    population += countryObj[0].population;
-  }
+  const getPopulations = await Promise.all(
+    getRuntimeAndMovieCountries.map((x) => getCountry(x.movieCountry))
+  ).then((data) => data.map((x) => x[0].population));
 
-  minutesHtml.innerHTML = `Length: ${movieInMin}`;
-  populationHtml.innerHTML = `Population: ${population}`;
+  const sumOfPopulation = getPopulations.reduce((a, b) => a + b);
+
+  const sumOfRuntimes = getRuntimeAndMovieCountries
+    .map((x) => x.runtime)
+    .reduce((a, b) => a + b);
+
+  minutesHtml.innerHTML = `Length: ${sumOfRuntimes} min`;
+  populationHtml.innerHTML = `Population: ${sumOfPopulation}`;
 }
